@@ -51,8 +51,70 @@ def run_calculation(user_choice):
             print("Choix invalide.")
     return result
 
-if __name__ == '__main__':
-    print_welcome_message()
-    user_choice = print_menu_and_get_choice()
-    result = run_calculation(user_choice)
-    print(result)
+import tkinter as tk
+
+class Calculatrice:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Mini Calculatrice")
+        self.root.configure(bg="#1e1e2e")
+        self.expression = ""
+        self._build_ui()
+
+    def _build_ui(self):
+        self.display = tk.Entry(
+            self.root,
+            font=("Courier New", 28, "bold"),
+            bg="#2a2a3e",
+            fg="#cdd6f4",
+            relief="flat",
+            justify="right",
+            bd=10,
+        )
+        self.display.grid(row=0, column=0, columnspan=4, padx=16, pady=16)
+
+        buttons = [
+            ["7","8","9","÷"],
+            ["4","5","6","×"],
+            ["1","2","3","-"],
+            ["C","0","=","+"],
+        ]
+        for r, row in enumerate(buttons):
+            for c, label in enumerate(row):
+                tk.Button(
+                    self.root, text=label,
+                    font=("Courier New", 20, "bold"),
+                    command=lambda l=label: self._on_click(l)
+                ).grid(row=r+1, column=c, padx=6, pady=6)
+
+    def _on_click(self, label):
+        if label == "C":
+            self.expression = ""
+            self.display.delete(0, tk.END)
+        elif label == "=":
+            # Appelle TES fonctions
+            try:
+                expr = self.expression
+                if "+" in expr[1:]:
+                    a, b = expr.split("+"); result = sum(float(a), float(b))
+                elif "-" in expr[1:]:
+                    a, b = expr.split("-"); result = substraction(float(a), float(b))
+                elif "*" in expr:
+                    a, b = expr.split("*"); result = multiplication(float(a), float(b))
+                elif "/" in expr:
+                    a, b = expr.split("/"); result = division(float(a), float(b))
+                self.display.delete(0, tk.END)
+                self.display.insert(0, str(result))
+                self.expression = ""
+            except:
+                self.display.delete(0, tk.END)
+                self.display.insert(0, "Erreur")
+        else:
+            self.expression += {"÷":"/","×":"*"}.get(label, label)
+            self.display.delete(0, tk.END)
+            self.display.insert(0, self.expression)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    Calculatrice(root)
+    root.mainloop()
