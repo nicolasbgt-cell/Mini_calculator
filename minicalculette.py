@@ -46,7 +46,7 @@ def run_calculation(user_choice):
         case '3':
             result = multiplication(num1, num2)
         case '4':
-            result = multiplication(num1, num2)
+            result = division(num1, num2)
         case _:
             print("Choix invalide.")
     return result
