@@ -2,7 +2,7 @@
 
 ---
 
-## 🇬🇧 English
+## English
 
 ### Description
 A mini calculator built in Python with a graphical interface (Tkinter) that performs the 4 basic operations: addition, subtraction, multiplication and division.
@@ -36,6 +36,8 @@ Mini_calculator/
 ├── minicalculette.py   # Main code
 └── README.md           # Documentation
 ```
+### ☕ Support
+👉 https://ko-fi.com/nicolasbgt
 
 ### Author
 Nicolas Bigot — École 42 Paris
@@ -45,7 +47,7 @@ Nicolas Bigot — École 42 Paris
 
 ---
 
-## 🇫🇷 Français
+## Français
 
 ### Description
 Une mini calculatrice en Python avec interface graphique (Tkinter) permettant d'effectuer les 4 opérations de base : addition, soustraction, multiplication et division.
@@ -79,6 +81,8 @@ Mini_calculator/
 ├── minicalculette.py   # Code principal
 └── README.md           # Documentation
 ```
+### ☕ Support
+👉 https://ko-fi.com/nicolasbgt
 
 ### Auteur
 Nicolas Bigot — École 42 Paris
