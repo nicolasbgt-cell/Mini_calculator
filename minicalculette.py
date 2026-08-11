@@ -1,5 +1,6 @@
 import tkinter as tk
 import functools
+import re
 
 
 def print_welcome_message() -> None:
@@ -74,35 +75,50 @@ class Calculatrice:
         self._build_ui()
 
     def _build_ui(self) -> None:
-        self.display = tk.Entry(
-            self.root,
-            font=("Courier New", 28, "bold"),
-            bg="#2a2a3e",
-            fg="#cdd6f4",
-            relief="flat",
-            justify="right",
-            bd=10,
-        )
-        self.display.grid(row=0, column=0, columnspan=4, padx=16, pady=16)
+        self.expression_label = tk.Label(
+                self.root,
+                text="",
+                font=("Courier New", 14),
+                bg="#1e1e2e",
+                fg="#888899",
+                anchor="e",
+                )
+        self.expression_label.grid(row=0, column=0, columnspan=4,
+                                   sticky="ew", padx=16, pady=(16, 0))
 
-        buttons: list[list[str]]  = [
-            ["7", "8", "9", "÷"],
-            ["4", "5", "6", "×"],
-            ["1", "2", "3", "-"],
-            ["C", "0", "=", "+"],
-        ]
+        self.result_label = tk.Label(
+                self.root,
+                text="0",
+                font=("Courier New", 36, "bold"),
+                bg="#1e1e2e",
+                fg="#cdd6f4",
+                anchor="e",
+                )
+        self.result_label.grid(row=1, column=0, columnspan=4,
+                               sticky="ew", padx=16, pady=(0, 16))
+
+        buttons: list[list[str]] = [
+                ["7", "8", "9", "÷"],
+                ["4", "5", "6", "×"],
+                ["1", "2", "3", "-"],
+                ["C", "0", ".", "+"],
+                ["", "", "", "="],
+                ]
         for r, row in enumerate(buttons):
             for c, label in enumerate(row):
+                if label == "":
+                    continue
                 tk.Button(
-                    self.root, text=label,
-                    font=("Courier New", 20, "bold"),
-                    command=functools.partial(self._on_click, label)
-                ).grid(row=r+1, column=c, padx=6, pady=6)
+                        self.root, text=label,
+                        font=("Courier New", 20, "bold"),
+                        command=functools.partial(self._on_click, label)
+                        ).grid(row=r + 2, column=c, padx=6, pady=6)
 
     def _on_click(self, label: str) -> None:
         if label == "C":
             self.expression = ""
-            self.display.delete(0, tk.END)
+            self.expression_label.config(text="")
+            self.result_label.config(text="0")
         elif label == "=":
             try:
                 expr = self.expression
@@ -119,16 +135,21 @@ class Calculatrice:
                 elif "/" in expr:
                     a, b = expr.split("/")
                     result = division(float(a), float(b))
-                self.display.delete(0, tk.END)
-                self.display.insert(0, str(result))
+
+                self.expression_label.config(text=expr.replace("*", "×")
+                                             .replace("/", "÷"))
+                self.result_label.config(text=str(result))
                 self.expression = ""
             except Exception:
-                self.display.delete(0, tk.END)
-                self.display.insert(0, "Erreur")
+                self.result_label.config(text="Erreur")
+        elif label == ".":
+            last_number = re.split(r"[+\-*/]", self.expression)[-1]
+            if "." not in last_number:
+                self.expression += "."
+                self.result_label.config(text=self.expression)
         else:
             self.expression += {"÷": "/", "×": "*"}.get(label, label)
-            self.display.delete(0, tk.END)
-            self.display.insert(0, self.expression)
+            self.result_label.config(text=self.expression)
 
 
 if __name__ == "__main__":
