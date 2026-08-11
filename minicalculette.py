@@ -1,4 +1,5 @@
 import tkinter as tk
+import functools
 
 
 def print_welcome_message() -> None:
@@ -65,14 +66,14 @@ def run_calculation(user_choice: str) -> float | None:
 
 
 class Calculatrice:
-    def __init__(self, root):
+    def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.root.title("Mini Calculatrice")
         self.root.configure(bg="#1e1e2e")
         self.expression = ""
         self._build_ui()
 
-    def _build_ui(self):
+    def _build_ui(self) -> None:
         self.display = tk.Entry(
             self.root,
             font=("Courier New", 28, "bold"),
@@ -84,7 +85,7 @@ class Calculatrice:
         )
         self.display.grid(row=0, column=0, columnspan=4, padx=16, pady=16)
 
-        buttons = [
+        buttons: list[list[str]]  = [
             ["7", "8", "9", "÷"],
             ["4", "5", "6", "×"],
             ["1", "2", "3", "-"],
@@ -95,7 +96,7 @@ class Calculatrice:
                 tk.Button(
                     self.root, text=label,
                     font=("Courier New", 20, "bold"),
-                    command=lambda label=label: self._on_click(label)
+                    command=functools.partial(self._on_click, label)
                 ).grid(row=r+1, column=c, padx=6, pady=6)
 
     def _on_click(self, label: str) -> None:
