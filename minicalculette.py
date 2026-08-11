@@ -44,10 +44,12 @@ def division(a: float, b: float) -> float | None:
         return a / b
     else:
         print("Erreur : division par zero")
+        return None
 
 
 def run_calculation(user_choice: str) -> float | None:
     num1, num2 = input_two_number()
+    result: float | None = None
     match user_choice:
         case '1':
             result = sum(num1, num2)
@@ -101,9 +103,9 @@ class Calculatrice:
             self.expression = ""
             self.display.delete(0, tk.END)
         elif label == "=":
-            # Appelle TES fonctions
             try:
                 expr = self.expression
+                result: float | None = None
                 if "+" in expr[1:]:
                     a, b = expr.split("+")
                     result = sum(float(a), float(b))
